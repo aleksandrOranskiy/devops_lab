@@ -23,7 +23,7 @@ print("Enter numbers separated by a space:")
 while True:
     first_line = read_line()
     n, m = first_line[0], first_line[1]
-    if 10**5+1 < n < 1 or 10**5+1 < m < 1:
+    if 10 ** 5 + 1 < n < 1 or 10 ** 5 + 1 < m < 1:
         print("Numbers n and m should be in the range (1-100000)")
         continue
     break

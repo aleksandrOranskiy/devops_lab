@@ -12,4 +12,4 @@ while True:
             break
 
 for i in range(number):
-    print(i**2)
+    print(i ** 2)
