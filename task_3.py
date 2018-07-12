@@ -3,7 +3,7 @@ import json
 import psutil
 
 
-class ConfigFile:
+class ConfigFile(object):
     """Class for parsing configuration files"""
     def __init__(self, filename):
         self.filename = filename
@@ -50,7 +50,7 @@ class ConfigFile:
             print("File doesn't exist")
 
 
-class SystemData:
+class SystemData(object):
     """Class for collecting a system information"""
     def __init__(self, timestamp):
         self.network_if = list(psutil.net_if_stats().keys())[0]
