@@ -32,11 +32,12 @@ def get_args():
 
 
 def github_req(username, repo):
+    login = input("Login to GitHub: ")
     password = getpass.getpass(prompt='Password: ')
     result = requests.get('https://api.github.com/repos/'
-                          'alenaPy/{0}/pulls?'
-                          'page=1&per_page=100'.format(repo),
-                          auth=(username, password))
+                          '{0}/{1}/pulls?'
+                          'page=1&per_page=100'.format(username, repo),
+                          auth=(login, password))
     return result
 
 
