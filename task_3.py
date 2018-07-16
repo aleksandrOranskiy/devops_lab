@@ -124,7 +124,8 @@ def collect_system_data(timestamp):
 def cron_schedule(interval, form):
 
     system_cron = CronTab(user=True)
-    job = system_cron.new(command='/home/student/.pyenv/versions/3.7.0/bin/python '
+    job = system_cron.new(command='/home/student/.pyenv/versions'
+                                  '/3.7.0/bin/python '
                                   '/home/student/devops_lab/cron.py')
     job.minute.every(interval)
     system_cron.env['form'] = form
