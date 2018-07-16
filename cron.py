@@ -6,7 +6,8 @@ import time
 
 ts = time.time()
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-value = t3.collect_system_data(st)
 temp_cron = CronTab(user=True)
 form = temp_cron.env['form']
+env_file = temp_cron.env['env_file']
+value = t3.collect_system_data(st, env_file)
 t3.write_file('output', form, value)

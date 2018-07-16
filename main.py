@@ -5,4 +5,7 @@ config_file = 'config.ini'
 config_values = t3.parse_file(config_file)
 interval = config_values[2]
 form = config_values[1]
-t3.cron_schedule(interval, form)
+env_file = config_values[3]
+python_path = config_values[4]
+script_path = config_values[5]
+t3.cron_schedule(interval, form, env_file, python_path, script_path)

@@ -41,6 +41,37 @@ def parse_file(filename):
                     return 1
                 else:
                     result_list.append(interval)
+
+            # receiving and checking value from the fourth line
+                env_file = f.readline().strip().split()
+                if env_file[0] != "env_file":
+                    print("The fourth line should start with 'env_file'")
+                    return 1
+                elif env_file[2]:
+                    result_list.append(env_file[2])
+                else:
+                    result_list.append("env")
+
+            # receiving and checking value from the fifth line
+                python_path = f.readline().strip().split()
+                if python_path[0] != "python_path":
+                    print("The fifth line should start with 'python_path'")
+                    return 1
+                elif python_path[2]:
+                    result_list.append(python_path[2])
+                else:
+                    result_list.append("$(which python)")
+
+            # receiving and checking value from the sixth line
+                script_path = f.readline().strip().split()
+                if script_path[0] != "script_path":
+                    print("The sixth line should start with 'script_path'")
+                    return 1
+                elif script_path[2]:
+                    result_list.append(script_path[2])
+                else:
+                    result_list.append("cron.py")
+
     except IOError:
         print("File doesn't exist")
 
@@ -77,17 +108,17 @@ def write_file(filename, form, data):
         print("File doesn't exist")
 
 
-def collect_system_data(timestamp):
+def collect_system_data(timestamp, env_file):
 
     try:
-        with open('env', 'r') as infile:
+        with open(env_file, 'r') as infile:
             index = temp = int(infile.readline())
     except IOError:
         print("File doesn't exist")
         index = temp = 1
 
     temp += 1
-    with open('env', 'w') as outfile:
+    with open(env_file, 'w') as outfile:
         outfile.write(str(temp))
     net_if = list(psutil.net_if_stats().keys())[0]
     result_data = {
@@ -121,14 +152,14 @@ def collect_system_data(timestamp):
     return result_data
 
 
-def cron_schedule(interval, form):
+def cron_schedule(interval, form, env_file, python_path, script_path):
 
     system_cron = CronTab(user=True)
-    job = system_cron.new(command='/home/student/.pyenv/versions'
-                                  '/3.7.0/bin/python '
-                                  '/home/student/devops_lab/cron.py')
+    command_string = python_path + " " + script_path
+    job = system_cron.new(command=command_string)
     job.minute.every(interval)
     system_cron.env['form'] = form
+    system_cron.env['env_file'] = env_file
     job.enable()
     system_cron.write_to_user(user=True)
 
