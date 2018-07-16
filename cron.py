@@ -6,8 +6,9 @@ import time
 
 ts = time.time()
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-sys_data = t3.SystemData(st)
-value = sys_data.collect_data()
-temp_cron = CronTab(user='student')
+temp_cron = CronTab(user=True)
 form = temp_cron.env['form']
-t3.write_file('/home/student/PycharmProjects/task_3/output', form, value)
+env_file = temp_cron.env['env_file']
+sys_data = t3.SystemData(st, env_file)
+value = sys_data.collect_data()
+t3.write_file('output', form, value)

@@ -46,13 +46,44 @@ class ConfigFile(object):
                         return 1
                     else:
                         self.result_list.append(interval)
+
+                # receiving and checking value from the fourth line
+                    env_file = f.readline().strip().split()
+                    if env_file[0] != "env_file":
+                        print("The fourth line should start with 'env_file'")
+                        return 1
+                    elif env_file[2]:
+                        self.result_list.append(env_file[2])
+                    else:
+                        self.result_list.append("env")
+
+                # receiving and checking value from the fifth line
+                    python_path = f.readline().strip().split()
+                    if python_path[0] != "python_path":
+                        print("The fifth line should start with 'python_path'")
+                        return 1
+                    elif python_path[2]:
+                        self.result_list.append(python_path[2])
+                    else:
+                        self.result_list.append("$(which python)")
+
+                # receiving and checking value from the sixth line
+                    script_path = f.readline().strip().split()
+                    if script_path[0] != "script_path":
+                        print("The sixth line should start with 'script_path'")
+                        return 1
+                    elif script_path[2]:
+                        self.result_list.append(script_path[2])
+                    else:
+                        self.result_list.append("cron.py")
+
         except IOError:
             print("File doesn't exist")
 
 
 class SystemData(object):
     """Class for collecting a system information"""
-    def __init__(self, timestamp):
+    def __init__(self, timestamp, env_file):
         self.network_if = list(psutil.net_if_stats().keys())[0]
         self.cpu = {
             "cpu_iowait": psutil.cpu_times()[4],
@@ -79,7 +110,7 @@ class SystemData(object):
             "net_mask": psutil.net_if_addrs()[self.network_if][0][2]
         }
         self.timestamp = timestamp
-        self.env_file = '/home/student/env'
+        self.env_file = env_file
         self.index = 0
 
     def __str__(self):
@@ -142,13 +173,13 @@ def write_file(filename, form, data):
         print("File doesn't exist")
 
 
-def cron_schedule(interval, form):
+def cron_schedule(interval, form, env_file, python_path, script_path):
 
     system_cron = CronTab(user=True)
-    job = system_cron.new(command='/home/student/.pyenv/versions/3.7.0/bin/python \
-    /home/student/PycharmProjects/task_3/cron.py', user='student')
+    job = system_cron.new(command=python_path + " " + script_path)
     job.minute.every(interval)
     system_cron.env['form'] = form
+    system_cron.env['env_file'] = env_file
     job.enable()
     system_cron.write_to_user(user=True)
 
