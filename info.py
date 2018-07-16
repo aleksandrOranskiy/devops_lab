@@ -53,7 +53,7 @@ def get_virt_env():
 
 def get_virt_envs():
     virt_envs = os.popen('pyenv versions'
-                        ' --bare --skip-aliases').read().strip().split("\n")
+                         ' --bare --skip-aliases').read().strip().split("\n")
     pyenv = os.popen('whereis pyenv').read().strip()
     m = re.search("(^|\s)(\S*)bin\/pyenv", pyenv)
     pyenv_path = m.group(2) + "versions/"
@@ -98,18 +98,19 @@ def write_to_yaml(data, filename):
 
 
 def process():
-    result_dict = {
-    "version": get_version(),
-    "aliases": get_aliases(),
-    "all_versions": get_versions(),
-    "virt_env": get_virt_env(),
-    "virt_envs": get_virt_envs(),
-    "executable": get_executable(),
-    "pip_location": get_pip_location(),
-    "python_path": get_python_path(),
-    "inst_modules": get_installed_modules(),
-    "site_location": get_site_location()
-    }
+    result_dict = \
+        {
+            "version": get_version(),
+            "aliases": get_aliases(),
+            "all_versions": get_versions(),
+            "virt_env": get_virt_env(),
+            "virt_envs": get_virt_envs(),
+            "executable": get_executable(),
+            "pip_location": get_pip_location(),
+            "python_path": get_python_path(),
+            "inst_modules": get_installed_modules(),
+            "site_location": get_site_location()
+        }
     args = get_args()
     dict_func = {
         write_to_json: args.boolean_j,
