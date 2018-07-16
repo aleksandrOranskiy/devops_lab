@@ -98,17 +98,18 @@ def write_to_yaml(data, filename):
 
 
 def process():
-    result_dict = {}
-    result_dict["version"] = get_version()
-    result_dict["aliases"] = get_aliases()
-    result_dict["all_versions"] = get_versions()
-    result_dict["virt_env"] = get_virt_env()
-    result_dict["virt_envs"] = get_virt_envs()
-    result_dict["executable"] = get_executable()
-    result_dict["pip_location"] = get_pip_location()
-    result_dict["python_path"] = get_python_path()
-    result_dict["inst_modules"] = get_installed_modules()
-    result_dict["site_location"] = get_site_location()
+    result_dict = {
+    "version": get_version(),
+    "aliases": get_aliases(),
+    "all_versions": get_versions(),
+    "virt_env": get_virt_env(),
+    "virt_envs": get_virt_envs(),
+    "executable": get_executable(),
+    "pip_location": get_pip_location(),
+    "python_path": get_python_path(),
+    "inst_modules": get_installed_modules(),
+    "site_location": get_site_location()
+    }
     args = get_args()
     dict_func = {
         write_to_json: args.boolean_j,
