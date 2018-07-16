@@ -79,10 +79,15 @@ def write_file(filename, form, data):
 
 def collect_system_data(timestamp):
 
-    with open('/home/student/env', 'r') as infile:
-        index = temp = int(infile.readline())
+    try:
+        with open('env', 'r') as infile:
+            index = temp = int(infile.readline())
+    except IOError:
+        print("File doesn't exist")
+        index = temp = 1
+
     temp += 1
-    with open('/home/student/env', 'w') as outfile:
+    with open('env', 'w') as outfile:
         outfile.write(str(temp))
     net_if = list(psutil.net_if_stats().keys())[0]
     result_data = {
@@ -119,8 +124,8 @@ def collect_system_data(timestamp):
 def cron_schedule(interval, form):
 
     system_cron = CronTab(user=True)
-    job = system_cron.new(command='/home/student/.pyenv/versions/3.7.0/bin/python \
-    /home/student/PycharmProjects/task_3/cron.py', user='student')
+    job = system_cron.new(command='/home/student/.pyenv/versions/3.7.0/bin/python '
+                                  '/home/student/devops_lab/cron.py')
     job.minute.every(interval)
     system_cron.env['form'] = form
     job.enable()
